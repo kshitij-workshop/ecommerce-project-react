@@ -1,24 +1,25 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useState, useEffect, Fragment } from "react";
+import { Fragment } from "react";
+import { useNavigate } from "react-router";
 import { Header } from "../../components/Header";
 import { formatMoney } from "../../utils/money";
 import "./OrdersPage.css";
+import { Link } from "react-router";
 
-export function OrdersPage({ cart, loadCart }) {
-  const [orders, setOrders] = useState([]);
+export function OrdersPage({ cart, loadCart, orders }) {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOrdersData = async () => {
-      const response = await axios.get("/api/orders?expand=products");
-      setOrders(response.data);
-    };
-    fetchOrdersData();
-  }, []);
+  const trackPackage = (order) => {
+    // navigate to tracking page and pass the order in location state
+    navigate("/tracking", { state: { order } });
+  };
+  
 
   return (
     <>
       <title>Orders</title>
+      <link rel="icon" type="image/svg+xml" href="orders-facicon.png" />
 
       <Header cart={cart} />
 
@@ -89,11 +90,12 @@ export function OrdersPage({ cart, loadCart }) {
                         </div>
 
                         <div className="product-actions">
-                          <a href="/tracking">
-                            <button className="track-package-button button-secondary">
-                              Track package
-                            </button>
-                          </a>
+                          <button
+                            className="track-package-button button-secondary"
+                            onClick={() => trackPackage(order)}
+                          >
+                            Track package
+                          </button>
                         </div>
                       </Fragment>
                     );
