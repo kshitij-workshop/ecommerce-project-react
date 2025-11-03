@@ -21,7 +21,7 @@ export function OrdersPage({ cart, loadCart, orders }) {
       <title>Orders</title>
       <link rel="icon" type="image/svg+xml" href="orders-facicon.png" />
 
-      <Header cart={cart} />
+  <Header cart={cart} loadCart={loadCart} />
 
       <div className="orders-page">
         <div className="page-title">Your Orders</div>
@@ -70,7 +70,9 @@ export function OrdersPage({ cart, loadCart, orders }) {
                             {orderProduct.product.name}
                           </div>
                           <div className="product-delivery-date">
-                            Arriving on:{" "}
+                            {dayjs().valueOf() > orderProduct.estimatedDeliveryTimeMs
+                              ? "Delivered on: "
+                              : "Arriving on: "}
                             {dayjs(orderProduct.estimatedDeliveryTimeMs).format(
                               "MMMM D"
                             )}

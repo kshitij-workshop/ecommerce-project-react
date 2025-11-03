@@ -5,6 +5,8 @@ import { HomePage } from "./pages/home/HomePage";
 import { CheckoutPage } from "./pages/checkout/CheckoutPage";
 import { OrdersPage } from "./pages/orders/OrdersPage";
 import { TrackingPage } from "./pages/Tracking/TrackingPage";
+import {NotFound404} from "./components/NotFound404.jsx";
+import ResetButton from './components/ResetButton';
 import "./App.css";
 
 window.axios = axios
@@ -32,12 +34,17 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route index element={<HomePage cart={cart} loadCart={loadCart}/>} />
-      <Route path="checkout" element={<CheckoutPage cart={cart} loadCart={loadCart} />} />
-      <Route path="orders" element={<OrdersPage cart={cart} loadCart={loadCart} orders={orders}/>} />
-      <Route path="tracking" element={< TrackingPage cart={cart} orders={orders} />} />  
-    </Routes>
+    <>
+      <Routes>
+        <Route index element={<HomePage cart={cart} loadCart={loadCart}/>} />
+        <Route path="checkout" element={<CheckoutPage cart={cart} loadCart={loadCart} />} />
+        <Route path="orders" element={<OrdersPage cart={cart} loadCart={loadCart} orders={orders}/>} />
+        <Route path="tracking" element={<TrackingPage cart={cart} orders={orders} loadCart={loadCart} />} />  
+        <Route path="*" element={<NotFound404 cart={cart}/>} />
+      </Routes>
+
+      <ResetButton loadCart={loadCart} />
+    </>
   );
 }
 

@@ -1,0 +1,31 @@
+.reset-button-fixed {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1200;
+  background: #084f2d;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reset-button-fixed:active {
+  transform: translateY(1px);
+}
+
+/* Slightly larger tap target on mobile */
+@media (max-width: 600px) {
+  .reset-button-fixed {
+    right: 14px;
+    bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+}

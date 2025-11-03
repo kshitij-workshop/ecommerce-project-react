@@ -2,7 +2,7 @@ import { NavLink, useNavigate, useSearchParams } from 'react-router'
 import './header.css'
 import { useState } from 'react';
 
-export function Header( {cart}) {
+export function Header({ cart }) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
@@ -49,6 +49,8 @@ export function Header( {cart}) {
             <div className="cart-quantity">{totalQuantity}</div>
             <div className="cart-text">Cart</div>
           </NavLink>
+
+          {/* Reset button moved to global floating ResetButton component */}
         </div>
       </div>
     )

@@ -3,18 +3,33 @@ import { Header } from "../../components/Header";
 import { Link, useLocation } from 'react-router';
 import dayjs from 'dayjs';
 
-export function TrackingPage({ cart = [], orders = [] }) {
+export function TrackingPage({ cart = [], orders = [], loadCart }) {
   const location = useLocation();
   const order = location?.state?.order || (orders && orders.length ? orders[0] : null);
 
   const firstProduct = order?.products?.[0];
-  const deliveryDate = firstProduct?.estimatedDeliveryTimeMs
-    ? dayjs(firstProduct.estimatedDeliveryTimeMs).format('MMMM D')
-    : null;
+
+  const totalDeliveryTimeMs = firstProduct?.estimatedDeliveryTimeMs && order?.orderTimeMs 
+    ? firstProduct.estimatedDeliveryTimeMs - order.orderTimeMs
+    : 0;
+  const timePassedMs = order?.orderTimeMs
+    ? dayjs().valueOf() - order.orderTimeMs
+    : 0;
+
+  let deliveryPercent = totalDeliveryTimeMs > 0 
+    ? (timePassedMs / totalDeliveryTimeMs) * 100
+    : 0;
+  
+  deliveryPercent = Math.min(Math.max(deliveryPercent, 0), 100);
+
+  const isPreparing = deliveryPercent < 33;
+  const isShipped = deliveryPercent >= 33 && deliveryPercent < 100;
+  const isDelivered = deliveryPercent === 100;
+
 
   return (
     <>
-      <Header cart={cart} />
+  <Header cart={cart} loadCart={loadCart} />
 
       <div className="tracking-page">
         <div className="order-tracking">
@@ -23,7 +38,10 @@ export function TrackingPage({ cart = [], orders = [] }) {
           </Link>
 
           <div className="delivery-date">
-            {deliveryDate ? `Arriving on ${deliveryDate}` : 'Arriving soon'}
+            {deliveryPercent >= 100 ? 'Delivered on ' : 'Arriving on '}
+            {firstProduct?.estimatedDeliveryTimeMs 
+              ? dayjs(firstProduct.estimatedDeliveryTimeMs).format('dddd, MMMM D')
+              : 'Unknown date'}
           </div>
 
           <div className="product-info">
@@ -41,13 +59,14 @@ export function TrackingPage({ cart = [], orders = [] }) {
           )}
 
           <div className="progress-labels-container">
-            <div className="progress-label">Preparing</div>
-            <div className="progress-label current-status">Shipped</div>
-            <div className="progress-label">Delivered</div>
+            <div className={`progress-label ${isPreparing && 'current-status'}`}>Preparing</div>
+            <div className={`progress-label ${isShipped && 'current-status'}`}>Shipped</div>
+            <div className={`progress-label ${isDelivered && 'current-status'}`}>Delivered</div>
           </div>
 
           <div className="progress-bar-container">
-            <div className="progress-bar"></div>
+            <div className="progress-bar" style={{
+              width: `${deliveryPercent}%`}}></div>
           </div>
         </div>
       </div>

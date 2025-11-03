@@ -7,6 +7,7 @@ import { PaymentSummary } from "./PaymentSummary";
 import { Link } from "react-router";
 
 export function CheckoutPage({ cart, loadCart }) {
+
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
@@ -52,8 +53,8 @@ export function CheckoutPage({ cart, loadCart }) {
             )
           </div>
 
-          <div className="checkout-header-right-section">
-            <img src="images/icons/checkout-lock-icon.png" />
+          <div className="checkout-header-right-section" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <img src="images/icons/checkout-lock-icon.png" style={{ marginRight: '10px' }} />
           </div>
         </div>
       </div>
