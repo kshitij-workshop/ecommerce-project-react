@@ -45,11 +45,11 @@ export function CheckoutPage({ cart, loadCart }) {
 
           <div className="checkout-header-middle-section">
             Checkout (
-            <a className="return-to-home-link" href="/">
+            <Link className="return-to-home-link" to="/">
               {cart && cart.length
                 ? `${cart.reduce((total, item) => total + (item.quantity || 1), 0)} items`
                 : '0 items'}
-            </a>
+            </Link>
             )
           </div>
 
